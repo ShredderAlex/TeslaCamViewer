@@ -1,53 +1,69 @@
-# TeslaCam Viewer
+# TeslaCam Viewer - Lite Version
 
-A powerful browser-based Tesla dashcam viewer with synchronized multi-angle playback, telemetry visualization, and comprehensive incident analysis tools. All processing happens locally - your video files never leave your computer.
+A streamlined browser-based Tesla dashcam viewer focused on core video playback functionality. This lite version removes advanced features to provide a simpler, faster, and more focused viewing experience.
 
-**Live Site: [teslacamviewer.com](https://teslacamviewer.com)**
+**🎯 This is the LITE VERSION** - for the full-featured version with AI/ML capabilities, maps, and analysis tools, see the [main branch](https://github.com/ShredderAlex/TeslaCamViewer).
 
-## Key Features
+## What Makes This "Lite"?
 
-### Video Playback
+The lite version focuses exclusively on **viewing and exporting Tesla dashcam footage** without the complexity of advanced analysis features:
+
+### ✅ What's Included (Core Features)
+
+#### Video Playback
 - **Synchronized Multi-Camera Playback** - View front, back, left, right (and pillar cameras on newer vehicles) simultaneously
 - **Multiple Layout Presets** - Grid, Picture-in-Picture, Focus views, and more
 - **Custom Layout Editor** - Design your own camera arrangements with drag-and-drop
-- **Playback Speed Control** - 0.25x to 2x speed with frame-by-frame stepping
+- **Playback Speed Control** - 0.25x to 5x speed with frame-by-frame stepping
 - **Fullscreen Mode** - Double-click any camera for fullscreen view
 
-### Event Management
+#### Event Management
 - **Multi-Drive Support** - Add multiple TeslaCam folders and switch between them
-- **Event Filtering** - Filter by type (Saved/Sentry/Recent), date range, location, or search
-- **Interactive Map** - View all events on a map with location markers and heatmap
+- **Event Filtering** - Filter by type (Saved/Sentry/Recent), date range, or search
 - **Bookmarks and Notes** - Add notes and tags to events, backed up to event folders
-- **Statistics Dashboard** - Analytics on event types, locations, recording time, and trends
 
-### Telemetry and Analysis
+#### Telemetry and Visualization
 - **Live Telemetry Overlay** - Speed, G-force, turn signals, brake/throttle from embedded video data
-- **Telemetry Graphs** - Interactive speed, G-force, and steering graphs with speed limit reference
-- **GPS Mini-Map** - Real-time vehicle position overlay
-- **Elevation Profile** - Route elevation visualization
-- **Weather Display** - Historical weather conditions for each event
-- **Street View Integration** - Compare dashcam view with Google Street View
+- **Telemetry Graphs** - Interactive speed, G-force, and steering graphs in sidebar
+- **Incident Detection** - Automatic near-miss scoring with timeline markers
 
-### Incident Documentation
-- **Insurance Report Generator** - PDF reports with frames, telemetry data, and maps
-- **Near-Miss Detection** - Automatic incident scoring with timeline markers
-- **Hard Braking Detection** - Identifies sudden acceleration/deceleration events
-- **Driving Smoothness Score** - Safety scoring based on driving behavior
-- **Autopilot Analysis** - Phantom braking detection and AP struggle zone mapping
-
-### Export and Sharing
+#### Export and Capture
 - **Screenshot Capture** - Save current frame from all cameras
-- **Video Export** - Export clips as WebM or MP4 with overlays
+- **Video Export** - Export clips as WebM, MP4, or GIF with overlays
 - **Clip Marking** - Set IN/OUT points for precise export ranges
 - **Privacy Mode** - Export with GPS and timestamp data stripped
-- **License Plate Blur** - AI-powered automatic plate detection and blurring
-- **Telemetry CSV Export** - Download telemetry data for external analysis
 
-### Customization
+#### Customization
 - **Theme System** - Dark, Light, Midnight, and Tesla Red themes
 - **Multi-Language Support** - Interface available in multiple languages
 - **Offline Package** - Download for fully offline use
 - **Automatic Updates** - Notifications when new versions are available
+
+### ❌ What's Removed (Advanced Features)
+
+To keep the lite version streamlined, the following features have been removed:
+
+#### AI/ML Features
+- License plate detection and blurring
+- License plate recognition (OCR)
+- Super-resolution image enhancement
+- Object tracking and region tracking
+- Multi-frame stacking
+
+#### Analysis Tools
+- Insurance report PDF generation
+- Statistics dashboard and analytics
+- Collision reconstruction and analysis
+
+#### Maps and External Services
+- Interactive event location maps
+- GPS mini-map overlay on video
+- Google Street View integration
+- Elevation profile visualization
+- Weather condition lookup
+- Speed limit data from OpenStreetMap
+
+**Rationale**: These features add significant complexity, require large AI model downloads (15-30 MB), and depend on external API calls. The lite version is perfect if you just want to view your Tesla footage without these extras.
 
 ## Browser Requirements
 
@@ -57,13 +73,9 @@ Firefox and Safari are not supported.
 
 ## Getting Started
 
-### Option 1: Use the Live Site (Recommended)
+### Option 1: Run Locally
 
-Visit [teslacamviewer.com](https://teslacamviewer.com) - no installation required.
-
-### Option 2: Run Locally
-
-1. Clone or download this repository
+1. Clone or download this repository (lite-version branch)
 2. Open `index.html` in Chrome or Edge, or run a local server:
 
 ```bash
@@ -76,7 +88,7 @@ npx http-server -p 8000
 
 3. Open http://localhost:8000 in your browser
 
-### Option 3: Offline Package
+### Option 2: Offline Package
 
 Use the "Download Offline Version" option in settings to create a portable copy that works without internet.
 
@@ -87,7 +99,8 @@ Use the "Download Offline Version" option in settings to create a portable copy 
 3. Click an event to start playback
 4. Use the timeline to scrub through footage
 5. Press `L` to cycle through layout presets
-6. Press `T` for telemetry overlay, `G` for graphs, `M` for mini-map
+6. Press `T` for telemetry overlay
+7. Press `S` to take a screenshot, `E` to export video
 
 ## Keyboard Shortcuts
 
@@ -99,10 +112,13 @@ Use the "Download Offline Version" option in settings to create a portable copy 
 | `Up/Down Arrow` | Previous/Next event |
 | `L` | Cycle layouts |
 | `T` | Toggle telemetry overlay |
-| `G` | Toggle telemetry graphs |
-| `M` | Toggle GPS mini-map |
 | `F` | Toggle fullscreen |
 | `S` | Take screenshot |
+| `E` | Export video |
+| `I` / `O` | Mark in/out points |
+| `B` | Add bookmark |
+| `[` / `]` | Previous/Next bookmark |
+| `N` | Open notes |
 | `?` | Show all shortcuts |
 
 ## Tesla Dashcam Folder Structure
@@ -130,78 +146,42 @@ TeslaCam/
 - **No data uploads** - All video processing happens in your browser
 - **No server backend** - The entire app runs client-side
 - **No tracking** - No analytics or telemetry collection
+- **No external API calls** - Lite version is completely offline (unlike full version)
 - **Local storage only** - Settings and bookmarks stored in your browser
 
-## External Services
+## Telemetry Data
 
-TeslaCamViewer connects to the following external services for enhanced functionality. **No personal information is transmitted** - only GPS coordinates when specific features are used.
+TeslaCamViewer Lite extracts telemetry data embedded in your Tesla's video files (firmware 2023.44.25+):
+- Vehicle speed
+- G-forces (acceleration/deceleration)
+- Turn signals
+- Brake and throttle position
+- GPS coordinates and heading
+- Steering angle
 
-### Data APIs
+All processing happens locally in your browser using WebAssembly - no cloud services required.
 
-| Service | Data Sent | Purpose |
-|---------|-----------|---------|
-| [Open-Meteo](https://open-meteo.com) | GPS coordinates, date | Weather conditions for events |
-| [Overpass API](https://overpass-api.de) | GPS coordinates | Speed limit data from OpenStreetMap |
-| [Nominatim](https://nominatim.openstreetmap.org) | GPS coordinates | Address lookup for insurance reports |
-| [TeslaCamViewer.com](https://teslacamviewer.com) | None | Version update check only |
+## Lite vs Full Version
 
-### Map Tile Providers (Images Only)
-
-| Provider | Attribution |
-|----------|-------------|
-| [OpenStreetMap](https://www.openstreetmap.org) | © OpenStreetMap contributors |
-| [Carto](https://carto.com) | © OpenStreetMap © CARTO |
-| [Stadia Maps](https://stadiamaps.com) | © Stadia Maps © OpenStreetMap |
-
-### User-Initiated Links
-
-Links to Google Maps and Google Street View open in new tabs when you click GPS coordinates or the Street View button. No data is sent automatically.
-
-**All video files remain on your computer and are never uploaded.**
-
-## AI Models
-
-TeslaCamViewer uses several AI/ML models for advanced features. All models run locally in your browser using WebAssembly - no cloud processing.
-
-### License Plate Detection
-
-| Model | Size | Purpose |
-|-------|------|---------|
-| **YOLOv11n** | 5.4 MB | Primary plate detector - fast and accurate for most regions |
-| **YOLOv8** | 6.2 MB | Alternative detector with different detection characteristics |
-| **LPDNet USA** | 3.1 MB | Optimized for North American plate formats |
-| **UK Plate Model** | 2.8 MB | Specialized for UK/EU plate styles |
-
-### License Plate Recognition (OCR)
-
-| Model | Size | Purpose |
-|-------|------|---------|
-| **CCT-XS** | 2.1 MB | Primary OCR - trained on 220k+ plates from 65+ countries |
-| **Tesseract.js** | ~15 MB | General-purpose OCR fallback |
-| **PaddleOCR** | ~10 MB | Alternative OCR with PP-OCRv3 architecture |
-
-### Image Enhancement
-
-| Model | Size | Purpose |
-|-------|------|---------|
-| **ESRGAN 4x** | ~5 MB | Super-resolution upscaling for plate enhancement |
-| **Super Resolution** | 5 MB | ONNX-based image upscaling |
-
-### Object Tracking
-
-| Model | Size | Purpose |
-|-------|------|---------|
-| **NanoTrack** | 1.2 MB | Tracks detected plates across video frames for multi-frame enhancement |
-
-### How Models Are Used
-
-1. **License Plate Blur** - Automatically detects and blurs plates in exports for privacy
-2. **Plate Enhancement** - Captures multiple frames, aligns them, and uses super-resolution to improve readability
-3. **OCR Reading** - Extracts text from enhanced plate images with confidence scoring
-
-### Model Loading
-
-Models are downloaded on-demand when you first use a feature requiring them. They're cached in your browser's IndexedDB for future use. You can pre-download models in Settings → Advanced.
+| Feature | Lite | Full |
+|---------|------|------|
+| Multi-camera playback | ✅ | ✅ |
+| Telemetry overlay | ✅ | ✅ |
+| Timeline navigation | ✅ | ✅ |
+| Layout options | ✅ | ✅ |
+| Video/screenshot export | ✅ | ✅ |
+| Notes & bookmarks | ✅ | ✅ |
+| Event filtering | ✅ | ✅ |
+| Multi-drive support | ✅ | ✅ |
+| Interactive maps | ❌ | ✅ |
+| License plate detection/blur | ❌ | ✅ |
+| Insurance report PDF | ❌ | ✅ |
+| Statistics dashboard | ❌ | ✅ |
+| Collision reconstruction | ❌ | ✅ |
+| Weather/speed limit data | ❌ | ✅ |
+| Street View integration | ❌ | ✅ |
+| Total size (approx) | ~2 MB | ~35 MB |
+| External dependencies | None | Multiple APIs |
 
 ## Troubleshooting
 
@@ -213,7 +193,7 @@ Models are downloaded on-demand when you first use a feature requiring them. The
 
 **Telemetry not showing**: Not all Tesla firmware versions embed telemetry data. Older recordings may not have this data.
 
-**Buffering issues with multiple windows**: Use tabs in the same window rather than separate browser windows.
+**Buffering issues**: Use tabs in the same window rather than separate browser windows. Consider moving footage to a faster drive (SSD).
 
 ## Contributing
 
@@ -223,12 +203,12 @@ Contributions welcome! Feel free to open issues or pull requests on GitHub.
 
 Have questions, ideas, or want to share how you use TeslaCam Viewer?
 
-**[Join the Discussion](https://github.com/NateMccomb/TeslaCamViewer/discussions)**
+**[Join the Discussion](https://github.com/ShredderAlex/TeslaCamViewer/discussions)**
 
-- **Q&A** - Get help with setup or usage questions
-- **Ideas** - Suggest new features or improvements
-- **Show and Tell** - Share interesting clips or use cases
-- **General** - Chat with other Tesla owners
+## Switching Between Versions
+
+- **Lite Version** (this branch): `git checkout lite-version`
+- **Full Version** (main branch): `git checkout main`
 
 ## License
 
@@ -236,6 +216,6 @@ MIT License - see LICENSE file for details.
 
 ## Version
 
-Current version: 2026.5.1.1
+Lite Version based on: 2026.5.1.1
 
-Click the version number in the app to view the full changelog.
+This streamlined version focuses on core video viewing functionality without advanced analysis features.
