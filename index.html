@@ -3,15 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>TeslaCamViewer.com</title>
-    <meta name="description" content="View Tesla dashcam footage with synchronized camera playback. Browse SavedClips, SentryClips, and RecentClips - all locally in your browser.">
+    <title>TeslaCamViewer.com Lite</title>
+    <meta name="description" content="View Tesla dashcam footage with synchronized camera playback. Streamlined lite version focused on core viewing features.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="styles/main.css?v=38">
-    <link rel="stylesheet" href="styles/plate-enhancer.css?v=8">
 </head>
 <body>
     <div class="app-container" role="application" aria-label="TeslaCam Viewer Application">
@@ -40,12 +35,12 @@
                     <rect x="30" y="20" width="4" height="4" rx="1" fill="#161a24"/>
                 </svg>
                 <div class="brand-text">
-                    <h1>TeslaCamViewer.com</h1>
+                    <h1>TeslaCamViewer.com Lite</h1>
                     <span class="brand-tagline"></span>
                 </div>
             </div>
             <div class="header-actions">
-                <a href="https://github.com/NateMccomb/TeslaCamViewer"
+                <a href="https://github.com/ShredderAlex/TeslaCamViewer/tree/lite-version"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="header-btn github-btn"
@@ -55,17 +50,6 @@
                     </svg>
                     <span data-i18n="header.github">GitHub</span>
                 </a>
-                <button id="sessionBtn" class="header-btn session-btn" title="Session Status">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-                    </svg>
-                    <span id="sessionBtnText">Free</span>
-                </button>
-                <button id="statsBtn" class="header-btn" data-i18n-title="header.statistics" title="Statistics">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/>
-                    </svg>
-                </button>
                 <button id="helpBtn" class="header-btn" data-i18n-title="header.keyboardShortcuts" title="Keyboard Shortcuts (?)">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
@@ -82,7 +66,7 @@
         <div class="main-content">
             <!-- Sidebar Overlay for mobile -->
             <div id="sidebarOverlay" class="sidebar-overlay hidden"></div>
-            <!-- Sidebar - Event Browser & Map -->
+            <!-- Sidebar - Event Browser -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-resize-handle" id="sidebarResizeHandle" title="Drag to resize"></div>
 
@@ -115,13 +99,7 @@
                     </div>
                 </div>
 
-                <!-- Tab Navigation -->
-                <div class="sidebar-tabs">
-                    <button class="tab-btn active" data-tab="events" data-i18n="sidebar.events">Events</button>
-                    <button class="tab-btn" data-tab="map" data-i18n="sidebar.map">Map</button>
-                </div>
-
-                <!-- Filter Panel (shared across tabs) -->
+                <!-- Filter Panel -->
                 <div id="filterPanel"></div>
 
                 <!-- Select Folder Button -->
@@ -132,9 +110,8 @@
                     <span data-i18n="sidebar.selectFolder">Select TeslaCam Folder</span>
                 </button>
 
-                <!-- Tab Content -->
+                <!-- Events List -->
                 <div class="tab-content">
-                    <!-- Events Tab -->
                     <div id="eventsTab" class="tab-pane active">
                         <div id="eventList" class="event-list">
                             <div class="empty-state" id="emptyState">
@@ -142,26 +119,6 @@
                                 <p class="hint" data-i18n="sidebar.emptyStateHint">You can select the TeslaCam folder, or any parent/child folder containing Tesla dashcam footage</p>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Map Tab -->
-                    <div id="mapTab" class="tab-pane">
-                        <div id="map"></div>
-                    </div>
-                </div>
-
-                <!-- Bird's Eye View Panel (collapsible, auto-hides when no GPS) -->
-                <div id="birdsEyePanel" class="sidebar-panel collapsible" style="display: none;">
-                    <div class="sidebar-panel-header" id="birdsEyeHeader">
-                        <span class="panel-title">Bird's Eye View</span>
-                        <button class="panel-collapse-btn" aria-label="Toggle panel">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="sidebar-panel-content" id="birdsEyeContent">
-                        <!-- Bird's Eye View canvas will be rendered here -->
                     </div>
                 </div>
 
@@ -279,15 +236,7 @@
                     <div class="event-info-content">
                         <span id="eventDate" class="event-date" data-i18n="player.noEventLoaded">No event loaded</span>
                         <span id="eventLocation" class="event-location"></span>
-                        <button id="streetViewBtn" class="street-view-btn" disabled title="Open Street View">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                <circle cx="12" cy="4.5" r="2.5"/>
-                                <path d="M12 7c-1.1 0-2 .9-2 2v6h1.5v7h1v-7h1v7h1v-7H16v-6c0-1.1-.9-2-2-2h-2z"/>
-                            </svg>
-                        </button>
                         <span id="eventReason" class="event-reason"></span>
-                        <span id="eventWeather" class="event-weather"></span>
-                        <span id="speedLimitDisplay" class="speed-limit-display" title="Speed Limit"></span>
                     </div>
                     <button id="notesBtn" class="event-info-notes-btn" disabled data-i18n-title="notes.title" title="Notes & Tags (N)">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -411,26 +360,9 @@
                                 <option value="5">5x</option>
                             </select>
                         </div>
-                        <button id="toggleSlowMoBtn" class="control-btn overlay-toggle-btn" disabled title="Toggle Incident Slow-Mo">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12,6 12,12 16,14"/>
-                                <path d="M2 12h2M20 12h2" stroke-dasharray="2,2"/>
-                            </svg>
-                        </button>
                         <button id="loopBtn" class="control-btn" disabled title="Toggle Loop">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
-                            </svg>
-                        </button>
-                        <button id="enhanceRegionBtn" class="control-btn" disabled title="Enhance Region (Right-click video)">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <!-- Crop/region box -->
-                                <path d="M17 15h2V7c0-1.1-.9-2-2-2H9v2h8v8z"/>
-                                <path d="M7 17V1H5v4H1v2h4v10c0 1.1.9 2 2 2h10v4h2v-4h4v-2H7z"/>
-                                <!-- Magnifying glass overlay -->
-                                <circle cx="14" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M16.5 12.5L19 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                             </svg>
                         </button>
                         <input type="checkbox" id="loopCheckbox" disabled style="display: none;">
@@ -494,24 +426,10 @@
                                     <span>GIF export takes ~10x clip length</span>
                                 </div>
 
-                                <!-- Insurance Report -->
-                                <button class="export-option export-action-btn" data-action="insurance-report" id="insuranceReportBtn">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                    </svg>
-                                    <span data-i18n="export.insuranceReport">Insurance Report (PDF)</span>
-                                </button>
-
                                 <div class="export-dropdown-divider"></div>
 
                                 <!-- Export Settings -->
                                 <div class="export-settings-header">Settings</div>
-
-                                <label class="export-option export-checkbox-option">
-                                    <input type="checkbox" id="blurPlatesExportCheckbox">
-                                    <span class="export-checkbox-label">Blur License Plates</span>
-                                    <span class="export-option-hint">Adds significant render time</span>
-                                </label>
 
                                 <label class="export-option export-checkbox-option">
                                     <input type="checkbox" id="privacyModeCheckbox">
@@ -557,104 +475,16 @@
                         </div>
                     </div>
 
-                    <!-- Overlay Controls Group (hidden on mobile, accessible via More menu) -->
+                    <!-- Overlay Controls Group -->
                     <div class="control-group control-group-overlays">
                         <button id="toggleHudBtn" class="control-btn overlay-toggle-btn" disabled title="Toggle HUD Overlay (T)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM9 8h2v8H9zm4 0h2v8h-2z"/>
                             </svg>
                         </button>
-                        <button id="toggleMiniMapBtn" class="control-btn overlay-toggle-btn" disabled title="Toggle Mini-Map (M)">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-                            </svg>
-                        </button>
-                        <button id="toggleStreetViewBtn" class="control-btn overlay-toggle-btn" disabled title="Toggle Street View (V)" style="display: none;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12.56 14.33c-.34.27-.56.7-.56 1.17V21h7c1.1 0 2-.9 2-2v-5.98c-.94-.33-1.95-.52-3-.52-2.03 0-3.93.7-5.44 1.83z"/>
-                                <circle cx="18" cy="6" r="5"/>
-                                <path d="M11.5 6c0-1.08.27-2.1.74-3H5c-1.1 0-2 .9-2 2v14c0 .55.23 1.05.59 1.41l9.82-9.82C12.23 9.42 11.5 7.8 11.5 6z"/>
-                            </svg>
-                        </button>
                     </div>
 
-                    <!-- Mobile More Menu -->
-                    <div class="control-group control-group-mobile-more">
-                        <div class="mobile-more-container">
-                            <button id="mobileMoreBtn" class="control-btn" title="More Options">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                    <circle cx="12" cy="5" r="2"/>
-                                    <circle cx="12" cy="12" r="2"/>
-                                    <circle cx="12" cy="19" r="2"/>
-                                </svg>
-                            </button>
-                            <div id="mobileMoreMenu" class="mobile-more-menu hidden">
-                                <div class="mobile-more-section">
-                                    <div class="mobile-more-label">Overlays</div>
-                                    <button class="mobile-more-option" data-action="toggle-hud">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM9 8h2v8H9zm4 0h2v8h-2z"/>
-                                        </svg>
-                                        <span>HUD Overlay</span>
-                                        <span class="mobile-more-status" id="mobileHudStatus">OFF</span>
-                                    </button>
-                                    <button class="mobile-more-option" data-action="toggle-minimap">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M20.5 3l-.16.03L15 5.1 9 3 3.36 4.9c-.21.07-.36.25-.36.48V20.5c0 .28.22.5.5.5l.16-.03L9 18.9l6 2.1 5.64-1.9c.21-.07.36-.25.36-.48V3.5c0-.28-.22-.5-.5-.5zM15 19l-6-2.11V5l6 2.11V19z"/>
-                                        </svg>
-                                        <span>Mini-Map</span>
-                                        <span class="mobile-more-status" id="mobileMiniMapStatus">OFF</span>
-                                    </button>
-                                </div>
-                                <div class="mobile-more-divider"></div>
-                                <div class="mobile-more-section">
-                                    <div class="mobile-more-label">View</div>
-                                    <button class="mobile-more-option" data-action="enhance">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>
-                                        </svg>
-                                        <span>Enhancement</span>
-                                    </button>
-                                    <div class="mobile-more-option mobile-layout-selector">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z"/>
-                                        </svg>
-                                        <span>Layout</span>
-                                        <select id="mobileLayoutSelect" class="mobile-layout-select">
-                                            <option value="grid-2x2">2x2 Grid</option>
-                                            <option value="layout-6-3">6:3 Centered</option>
-                                            <option value="layout-4-3">4:3 Main</option>
-                                            <option value="layout-focus">Focus</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mobile-more-divider"></div>
-                                <div class="mobile-more-section">
-                                    <div class="mobile-more-label">Export</div>
-                                    <button class="mobile-more-option" data-action="screenshot">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
-                                        </svg>
-                                        <span>Screenshot</span>
-                                    </button>
-                                    <button class="mobile-more-option" data-action="export-video">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
-                                        </svg>
-                                        <span>Export Video</span>
-                                    </button>
-                                    <button class="mobile-more-option" data-action="insurance-report">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                        </svg>
-                                        <span>Insurance Report</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hidden buttons kept for keyboard shortcuts / compatibility -->
+                    <!-- Hidden buttons kept for keyboard shortcuts -->
                     <button id="frameBackBtn" class="control-btn hidden-control" disabled data-i18n-title="controls.previousFrame" title="Previous Frame">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm7 0V6l-8.5 6 8.5 6z"/></svg>
                     </button>
@@ -728,15 +558,6 @@
                         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                     </svg>
                 </button>
-                <div class="bs-more-container">
-                    <button id="bsMoreBtn" class="control-btn" title="More Options">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <circle cx="12" cy="5" r="2"/>
-                            <circle cx="12" cy="12" r="2"/>
-                            <circle cx="12" cy="19" r="2"/>
-                        </svg>
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -767,36 +588,18 @@
     <!-- Scripts -->
     <!-- JSZip for offline package creation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <!-- Protocol Buffers for Tesla SEI telemetry -->
     <script src="https://cdn.jsdelivr.net/npm/protobufjs@7.2.6/dist/protobuf.min.js"></script>
-    <!-- jsPDF for insurance report generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <!-- ONNX Runtime Web for license plate detection (uses CDN for proper module resolution) -->
-    <script>
-        // Pre-configure ONNX Runtime before loading
-        window.ortConfig = { numThreads: 1 };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js" defer></script>
-    <!-- UpscalerJS for AI-powered image super-resolution -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/default-model@latest/dist/umd/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@upscalerjs/esrgan-thick@latest/dist/umd/4x.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/upscaler@latest/dist/browser/umd/upscaler.min.js"></script>
     <!-- gif.js for animated GIF export -->
     <script src="vendor/gif.js"></script>
 
     <!-- i18n (load first) -->
     <script src="js/i18n.js?v=2"></script>
 
-    <!-- App Modules -->
+    <!-- App Modules - Lite Version (Core functionality only) -->
     <script src="js/sidebarResize.js"></script>
     <script src="js/eventFilter.js"></script>
     <script src="js/filterPanel.js"></script>
-    <script src="js/mapView.js?v=10"></script>
     <script src="js/folderManager.js"></script>
     <script src="js/folderParser.js?v=3"></script>
     <script src="js/eventBrowser.js?v=2"></script>
@@ -811,34 +614,19 @@
     <script src="js/videoEnhancer.js"></script>
     <script src="js/seiExtractor.js"></script>
     <script src="js/telemetryOverlay.js?v=8"></script>
-    <script src="js/miniMapOverlay.js?v=8"></script>
-    <script src="js/weatherService.js"></script>
-    <script src="js/elevationService.js?v=2"></script>
-    <script src="js/speedLimitService.js?v=7"></script>
-    <script src="js/elevationOverlay.js?v=4"></script>
     <script src="js/telemetryGraphs.js?v=13"></script>
     <script src="js/incidentSlowMo.js?v=1"></script>
-    <script src="js/collisionReconstruction.js?v=3"></script>
-    <script src="js/streetViewOverlay.js?v=2"></script>
     <script src="js/eventDataBackup.js"></script>
     <script src="js/notesManager.js?v=1"></script>
     <script src="js/videoExport.js?v=17"></script>
     <script src="js/clipMarking.js"></script>
-    <script src="js/insuranceReport.js?v=11"></script>
     <script src="js/settingsManager.js?v=11"></script>
     <script src="js/versionManager.js?v=15"></script>
-    <script src="js/statisticsManager.js?v=1"></script>
     <script src="js/helpModal.js?v=6"></script>
     <script src="js/quickStartGuide.js?v=3"></script>
     <script src="js/offlinePackager.js?v=1"></script>
     <script src="js/driveSync.js"></script>
     <script src="js/driveSyncUI.js"></script>
-    <script src="js/regionTracker.js?v=5"></script>
-    <script src="js/frameStacker.js?v=69"></script>
-    <script src="js/plateRecognizer.js?v=4"></script>
-    <script src="js/plateEnhancer.js?v=90"></script>
-    <script src="js/plateDetector.js?v=13"></script>
-    <script src="js/plateBlur.js?v=17"></script>
-    <script src="js/app.js?v=31"></script>
+    <script src="js/app.js?v=32-lite"></script>
 </body>
 </html>
